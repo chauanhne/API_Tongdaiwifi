@@ -1,0 +1,321 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2026-05-28T00:00:00.000Z",
+  "__export_source": "claude-code-ecom",
+  "resources": [
+
+    {
+      "_id": "wrk_ecom_carddesc",
+      "_type": "workspace",
+      "name": "ECOM — cardDescription (Sprint V1.2)",
+      "description": "Test cases cho field cardDescription — GET /api/v1/bundles",
+      "scope": "collection"
+    },
+
+    {
+      "_id": "env_ecom_base",
+      "_type": "environment",
+      "name": "Staging",
+      "parentId": "wrk_ecom_carddesc",
+      "data": {
+        "base_url": "https://staging.tongdaiwifi.vn",
+        "token": "ĐIỀN_TOKEN_VÀO_ĐÂY"
+      }
+    },
+
+    {
+      "_id": "fld_happy",
+      "_type": "request_group",
+      "name": "Happy Path & Data Integrity",
+      "parentId": "wrk_ecom_carddesc"
+    },
+    {
+      "_id": "fld_boundary",
+      "_type": "request_group",
+      "name": "Boundary Values",
+      "parentId": "wrk_ecom_carddesc"
+    },
+    {
+      "_id": "fld_validate_null",
+      "_type": "request_group",
+      "name": "Validate — Null / Empty / Whitespace",
+      "parentId": "wrk_ecom_carddesc"
+    },
+    {
+      "_id": "fld_validate_status",
+      "_type": "request_group",
+      "name": "Validate — Bundle Status",
+      "parentId": "wrk_ecom_carddesc"
+    },
+    {
+      "_id": "fld_validate_consistency",
+      "_type": "request_group",
+      "name": "Validate — Consistency Across Filter Params",
+      "parentId": "wrk_ecom_carddesc"
+    },
+
+    {
+      "_id": "req_tc01",
+      "_type": "request",
+      "name": "TC_BUNDLE.1 — cardDescription trả về đúng nội dung khi đã config",
+      "parentId": "fld_happy",
+      "method": "GET",
+      "url": "{{ _.base_url }}/api/v1/bundles",
+      "headers": [
+        { "name": "Authorization", "value": "Bearer {{ _.token }}" }
+      ],
+      "parameters": [
+        { "name": "channelCode",   "value": "WEB" },
+        { "name": "customerType",  "value": "KH_MOI" },
+        { "name": "ward",          "value": "Dịch Vọng Hậu" },
+        { "name": "city",          "value": "Hà Nội" }
+      ],
+      "body": {},
+      "description": "Pre-condition: BUNDLE_CARD_DESC_001 — ACTIVE, cardDescription = \"Mô tả card gói Internet Sprint V1.2\"\nExpected: HTTP 200 | data[i].cardDescription = \"Mô tả card gói Internet Sprint V1.2\" | typeof = string"
+    },
+
+    {
+      "_id": "req_tc02",
+      "_type": "request",
+      "name": "TC_BUNDLE.2 — cardDescription = null khi bundle chưa config",
+      "parentId": "fld_happy",
+      "method": "GET",
+      "url": "{{ _.base_url }}/api/v1/bundles",
+      "headers": [
+        { "name": "Authorization", "value": "Bearer {{ _.token }}" }
+      ],
+      "parameters": [
+        { "name": "channelCode",   "value": "WEB" },
+        { "name": "customerType",  "value": "KH_MOI" },
+        { "name": "ward",          "value": "Dịch Vọng Hậu" },
+        { "name": "city",          "value": "Hà Nội" }
+      ],
+      "body": {},
+      "description": "Pre-condition: BUNDLE_NO_CARD_DESC_001 — ACTIVE, cardDescription = null trong DB\nExpected: HTTP 200 | data[i].cardDescription = null hoặc field vắng mặt | [CẦN CONFIRM DEV: trả null hay bỏ qua field?]"
+    },
+
+    {
+      "_id": "req_tc03",
+      "_type": "request",
+      "name": "TC_BUNDLE.3 — cardDescription mỗi bundle độc lập, không cross-contamination",
+      "parentId": "fld_happy",
+      "method": "GET",
+      "url": "{{ _.base_url }}/api/v1/bundles",
+      "headers": [
+        { "name": "Authorization", "value": "Bearer {{ _.token }}" }
+      ],
+      "parameters": [
+        { "name": "channelCode",   "value": "WEB" },
+        { "name": "customerType",  "value": "KH_MOI" },
+        { "name": "ward",          "value": "Dịch Vọng Hậu" },
+        { "name": "city",          "value": "Hà Nội" }
+      ],
+      "body": {},
+      "description": "Pre-condition:\n- BUNDLE_CARD_DESC_001: cardDescription = \"Mô tả A\"\n- BUNDLE_CARD_DESC_002: cardDescription = \"Mô tả B\"\n- BUNDLE_NO_CARD_DESC_001: cardDescription = null\nExpected: HTTP 200 | mỗi bundle trả đúng cardDescription của riêng mình | không bị lấy nhầm"
+    },
+
+    {
+      "_id": "req_tc04",
+      "_type": "request",
+      "name": "TC_BUNDLE.4 — cardDescription là kiểu String, không phải number/array/object",
+      "parentId": "fld_happy",
+      "method": "GET",
+      "url": "{{ _.base_url }}/api/v1/bundles",
+      "headers": [
+        { "name": "Authorization", "value": "Bearer {{ _.token }}" }
+      ],
+      "parameters": [
+        { "name": "channelCode",   "value": "WEB" },
+        { "name": "customerType",  "value": "KH_MOI" },
+        { "name": "ward",          "value": "Dịch Vọng Hậu" },
+        { "name": "city",          "value": "Hà Nội" }
+      ],
+      "body": {},
+      "description": "Pre-condition: BUNDLE_CARD_DESC_001 — ACTIVE, có cardDescription đã config\nExpected: HTTP 200 | typeof(data[i].cardDescription) = \"string\" | KHÔNG phải number, array, hay object"
+    },
+
+    {
+      "_id": "req_tc05",
+      "_type": "request",
+      "name": "TC_BUNDLE.5 — cardDescription dài >255 ký tự không bị truncate",
+      "parentId": "fld_boundary",
+      "method": "GET",
+      "url": "{{ _.base_url }}/api/v1/bundles",
+      "headers": [
+        { "name": "Authorization", "value": "Bearer {{ _.token }}" }
+      ],
+      "parameters": [
+        { "name": "channelCode",   "value": "WEB" },
+        { "name": "customerType",  "value": "KH_MOI" },
+        { "name": "ward",          "value": "Dịch Vọng Hậu" },
+        { "name": "city",          "value": "Hà Nội" }
+      ],
+      "body": {},
+      "description": "Pre-condition: BUNDLE_LONG_CARD_DESC_001 — ACTIVE, cardDescription = chuỗi 300 ký tự\nExpected: HTTP 200 | len(cardDescription) = 300 | không bị cắt | [CẦN CONFIRM: max length?]"
+    },
+
+    {
+      "_id": "req_tc06",
+      "_type": "request",
+      "name": "TC_BUNDLE.6 — cardDescription với ký tự đặc biệt, HTML tag, Unicode tiếng Việt",
+      "parentId": "fld_boundary",
+      "method": "GET",
+      "url": "{{ _.base_url }}/api/v1/bundles",
+      "headers": [
+        { "name": "Authorization", "value": "Bearer {{ _.token }}" }
+      ],
+      "parameters": [
+        { "name": "channelCode",   "value": "WEB" },
+        { "name": "customerType",  "value": "KH_MOI" },
+        { "name": "ward",          "value": "Dịch Vọng Hậu" },
+        { "name": "city",          "value": "Hà Nội" }
+      ],
+      "body": {},
+      "description": "Pre-condition: BUNDLE_SPECIAL_CHAR_001 — cardDescription = \"Gói <b>đặc biệt</b> -- 1Gbps & Miễn phí lắp đặt\"\nExpected: HTTP 200 | trả raw string, không encode thành &lt;b&gt; | ký tự UTF-8 đúng | [ASSUMPTION: API không HTML-encode]"
+    },
+
+    {
+      "_id": "req_tc07",
+      "_type": "request",
+      "name": "TC_BUNDLE.7 — cardDescription khi config empty string \"\" (null vs empty)",
+      "parentId": "fld_validate_null",
+      "method": "GET",
+      "url": "{{ _.base_url }}/api/v1/bundles",
+      "headers": [
+        { "name": "Authorization", "value": "Bearer {{ _.token }}" }
+      ],
+      "parameters": [
+        { "name": "channelCode",   "value": "WEB" },
+        { "name": "customerType",  "value": "KH_MOI" },
+        { "name": "ward",          "value": "Dịch Vọng Hậu" },
+        { "name": "city",          "value": "Hà Nội" }
+      ],
+      "body": {},
+      "description": "Pre-condition: BUNDLE_EMPTY_CARD_DESC_001 — ACTIVE, cardDescription = \"\" (empty string trong DB)\nExpected: HTTP 200 | cardDescription = null HOẶC \"\" | [CẦN CONFIRM DEV: chuẩn hóa empty → null hay giữ nguyên?]"
+    },
+
+    {
+      "_id": "req_tc08",
+      "_type": "request",
+      "name": "TC_BUNDLE.8 — cardDescription khi config chỉ whitespace \"   \" (trim hay không)",
+      "parentId": "fld_validate_null",
+      "method": "GET",
+      "url": "{{ _.base_url }}/api/v1/bundles",
+      "headers": [
+        { "name": "Authorization", "value": "Bearer {{ _.token }}" }
+      ],
+      "parameters": [
+        { "name": "channelCode",   "value": "WEB" },
+        { "name": "customerType",  "value": "KH_MOI" },
+        { "name": "ward",          "value": "Dịch Vọng Hậu" },
+        { "name": "city",          "value": "Hà Nội" }
+      ],
+      "body": {},
+      "description": "Pre-condition: BUNDLE_WHITESPACE_CARD_DESC_001 — ACTIVE, cardDescription = \"   \" (3 khoảng trắng)\nExpected: HTTP 200 | cardDescription = \"   \" HOẶC null | [CẦN CONFIRM DEV: API có trim whitespace không?]"
+    },
+
+    {
+      "_id": "req_tc09",
+      "_type": "request",
+      "name": "TC_BUNDLE.9 — cardDescription khi bundle INACTIVE",
+      "parentId": "fld_validate_status",
+      "method": "GET",
+      "url": "{{ _.base_url }}/api/v1/bundles",
+      "headers": [
+        { "name": "Authorization", "value": "Bearer {{ _.token }}" }
+      ],
+      "parameters": [
+        { "name": "channelCode",   "value": "WEB" },
+        { "name": "customerType",  "value": "KH_MOI" },
+        { "name": "ward",          "value": "Dịch Vọng Hậu" },
+        { "name": "city",          "value": "Hà Nội" }
+      ],
+      "body": {},
+      "description": "Pre-condition: BUNDLE_INACTIVE_CARD_DESC_001 — INACTIVE, cardDescription = \"Mô tả card gói INACTIVE\"\nExpected: HTTP 200\n- Nếu bundle INACTIVE được trả về → cardDescription = \"Mô tả card gói INACTIVE\"\n- Nếu không được trả về → data[] không chứa bundle này\n[CẦN CONFIRM DEV: API có filter out bundle INACTIVE không?]"
+    },
+
+    {
+      "_id": "req_tc10a",
+      "_type": "request",
+      "name": "TC_BUNDLE.10 [Lần 1 — KH_MOI] — cardDescription không đổi theo customerType",
+      "parentId": "fld_validate_consistency",
+      "method": "GET",
+      "url": "{{ _.base_url }}/api/v1/bundles",
+      "headers": [
+        { "name": "Authorization", "value": "Bearer {{ _.token }}" }
+      ],
+      "parameters": [
+        { "name": "channelCode",   "value": "WEB" },
+        { "name": "customerType",  "value": "KH_MOI" },
+        { "name": "ward",          "value": "Dịch Vọng Hậu" },
+        { "name": "city",          "value": "Hà Nội" }
+      ],
+      "body": {},
+      "description": "Bước 1/2 — TC_BUNDLE.10\nPre-condition: BUNDLE_CARD_DESC_001 áp dụng cho cả KH_MOI và KH_CU | cardDescription = \"Mô tả card gói Internet Sprint V1.2\"\nGhi lại cardDesc_1, sau đó chạy tiếp TC_BUNDLE.10 [Lần 2 — KH_CU]\nExpected: HTTP 200 | cardDesc_1 = \"Mô tả card gói Internet Sprint V1.2\""
+    },
+
+    {
+      "_id": "req_tc10b",
+      "_type": "request",
+      "name": "TC_BUNDLE.10 [Lần 2 — KH_CU] — cardDescription không đổi theo customerType",
+      "parentId": "fld_validate_consistency",
+      "method": "GET",
+      "url": "{{ _.base_url }}/api/v1/bundles",
+      "headers": [
+        { "name": "Authorization", "value": "Bearer {{ _.token }}" }
+      ],
+      "parameters": [
+        { "name": "channelCode",   "value": "WEB" },
+        { "name": "customerType",  "value": "KH_CU" },
+        { "name": "ward",          "value": "Dịch Vọng Hậu" },
+        { "name": "city",          "value": "Hà Nội" }
+      ],
+      "body": {},
+      "description": "Bước 2/2 — TC_BUNDLE.10\nSo sánh cardDesc_2 với cardDesc_1 từ lần 1\nExpected: HTTP 200 | cardDesc_2 = cardDesc_1 = \"Mô tả card gói Internet Sprint V1.2\" | cardDescription KHÔNG thay đổi theo customerType"
+    },
+
+    {
+      "_id": "req_tc11a",
+      "_type": "request",
+      "name": "TC_BUNDLE.11 [Lần 1 — không có attribute] — cardDescription không đổi theo attribute filter",
+      "parentId": "fld_validate_consistency",
+      "method": "GET",
+      "url": "{{ _.base_url }}/api/v1/bundles",
+      "headers": [
+        { "name": "Authorization", "value": "Bearer {{ _.token }}" }
+      ],
+      "parameters": [
+        { "name": "channelCode",   "value": "WEB" },
+        { "name": "customerType",  "value": "KH_MOI" },
+        { "name": "ward",          "value": "Dịch Vọng Hậu" },
+        { "name": "city",          "value": "Hà Nội" }
+      ],
+      "body": {},
+      "description": "Bước 1/2 — TC_BUNDLE.11\nPre-condition: BUNDLE_CARD_DESC_001 có attribute \"Tốc độ\" = \"1Gbps\", cardDescription = \"Mô tả card gói Internet Sprint V1.2\"\nGhi lại cardDesc_1, sau đó chạy tiếp TC_BUNDLE.11 [Lần 2 — có attribute filter]\nExpected: HTTP 200 | cardDesc_1 = \"Mô tả card gói Internet Sprint V1.2\""
+    },
+
+    {
+      "_id": "req_tc11b",
+      "_type": "request",
+      "name": "TC_BUNDLE.11 [Lần 2 — có attribute filter] — cardDescription không đổi theo attribute filter",
+      "parentId": "fld_validate_consistency",
+      "method": "GET",
+      "url": "{{ _.base_url }}/api/v1/bundles",
+      "headers": [
+        { "name": "Authorization", "value": "Bearer {{ _.token }}" }
+      ],
+      "parameters": [
+        { "name": "channelCode",    "value": "WEB" },
+        { "name": "customerType",   "value": "KH_MOI" },
+        { "name": "ward",           "value": "Dịch Vọng Hậu" },
+        { "name": "city",           "value": "Hà Nội" },
+        { "name": "attributeName",  "value": "Tốc độ" },
+        { "name": "attributeValue", "value": "1Gbps" }
+      ],
+      "body": {},
+      "description": "Bước 2/2 — TC_BUNDLE.11\nSo sánh cardDesc_2 với cardDesc_1 từ lần 1\nExpected: HTTP 200 | cardDesc_2 = cardDesc_1 = \"Mô tả card gói Internet Sprint V1.2\" | cardDescription KHÔNG bị ảnh hưởng bởi attribute filter"
+    }
+
+  ]
+}
