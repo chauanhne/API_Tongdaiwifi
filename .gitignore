@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.env
+.venv/
+venv/
+
+# Playwright
+playwright-api-tests/test-results/
+playwright-api-tests/.playwright/
+
+# Bug artifacts (video/screenshot/trace lớn)
+bug-artifacts/*/video.webm
+bug-artifacts/*/trace.zip
+bug-artifacts/*/screenshot.png
+
+# Temp / generated scripts
+gen_tc.py
+gen_md.py
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Local Claude settings
+.claude/
+
+# Temp Excel lock files
+outputs/~$*
+
+# Temp extract files
+outputs/excel_extract.txt

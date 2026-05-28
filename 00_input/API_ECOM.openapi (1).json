@@ -1,0 +1,265 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "API_ECOM",
+    "description": "",
+    "version": "1.0.0"
+  },
+  "tags": [],
+  "paths": {
+    "/ordering/public/v1/voucher/list": {
+      "post": {
+        "summary": "getlistvoucher",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "X-Checkout-Token",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGVja291dElkIjoiMDAwMEkxOFRXTkZLIiwianRpIjoiNmQ1NGVjNmQtNGQyOC00YzY2LWE5OTItMDQxMDhkMDg4ZjkzIiwibmJmIjoxNzc5ODU0MTY2LCJleHAiOjE3Nzk4NTUzNjYsImlhdCI6MTc3OTg1NDE2Nn0.wclOd6Lh2DOdtplipG8mUlqJzq-dHfrddqZ496qqYqQ",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Client-Id",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "example": "tongdaiwifi",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "example": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIyM2Q4MDZkMC1hZDQwLTQ0NzYtOWNiYS1mMzhiYjBjMmYyMjEiLCJjbGllbnRfaWQiOiI3Yzg5ZjI3Yi0yMjYwLTQ1MzItOGJkOC00ZTQ4NDIwYTBiNDgiLCJjbGllbnRfdHlwZSI6ImludGVybmFsIiwiY2hhbm5lbF9pZCI6IjEiLCJzY29wZSI6IiIsIm5iZiI6MTc3OTg1NDY1MCwiZXhwIjoxNzgwNzE4NjUwLCJpYXQiOjE3Nzk4NTQ2NTAsImlzcyI6ImVjcC1wbGF0Zm9ybSIsImF1ZCI6ImVjcC1wbGF0Zm9ybSJ9.EABIUZ5cc5QvLqjSpXL05Fz9NV0O1iV7rcXqzcx1NMs",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "error": {
+                      "type": "null"
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "type": "null"
+                        },
+                        "request_id": {
+                          "type": "string"
+                        },
+                        "trace_id": {
+                          "type": "string"
+                        },
+                        "timestamp": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "pagination",
+                        "request_id",
+                        "trace_id",
+                        "timestamp"
+                      ]
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "voucher_code": {
+                            "type": "string"
+                          },
+                          "description": {
+                            "type": "string"
+                          },
+                          "note": {
+                            "type": "string"
+                          },
+                          "to_date": {
+                            "type": "string"
+                          },
+                          "register_type_id": {
+                            "type": "integer"
+                          },
+                          "voucher_type": {
+                            "type": "string"
+                          },
+                          "policy_group_id": {
+                            "type": "integer"
+                          },
+                          "apply_type_id": {
+                            "type": "integer"
+                          },
+                          "promotion_type_id": {
+                            "type": "integer"
+                          }
+                        },
+                        "required": [
+                          "voucher_code",
+                          "description",
+                          "note",
+                          "to_date",
+                          "register_type_id",
+                          "voucher_type",
+                          "policy_group_id",
+                          "apply_type_id",
+                          "promotion_type_id"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "error",
+                    "meta",
+                    "data"
+                  ]
+                },
+                "example": {
+                  "success": true,
+                  "error": null,
+                  "meta": {
+                    "pagination": null,
+                    "request_id": "0HNLR2QKOHEHL:00000001",
+                    "trace_id": "24842b272c16167301fec9263df92baa",
+                    "timestamp": "2026-05-27 04:08:42"
+                  },
+                  "data": [
+                    {
+                      "voucher_code": "CA4482VIGIAM20KK",
+                      "description": "Giàm 20k trực tiếp",
+                      "note": "",
+                      "to_date": "31/07/2026",
+                      "register_type_id": 2,
+                      "voucher_type": "Individual",
+                      "policy_group_id": 101,
+                      "apply_type_id": 2,
+                      "promotion_type_id": 1
+                    },
+                    {
+                      "voucher_code": "CA4483GIAMTT20K1034",
+                      "description": "Giảm combo 20k",
+                      "note": "",
+                      "to_date": "31/08/2026",
+                      "register_type_id": 2,
+                      "voucher_type": "Individual",
+                      "policy_group_id": 101,
+                      "apply_type_id": 2,
+                      "promotion_type_id": 1
+                    },
+                    {
+                      "voucher_code": "CA4520GIA3MMTT22K",
+                      "description": "Giảm 22k Net Only",
+                      "note": "",
+                      "to_date": "30/11/2026",
+                      "register_type_id": 2,
+                      "voucher_type": "Individual",
+                      "policy_group_id": 101,
+                      "apply_type_id": 2,
+                      "promotion_type_id": 1
+                    },
+                    {
+                      "voucher_code": "CA4525GAIMPHM1405",
+                      "description": "50000",
+                      "note": "",
+                      "to_date": "31/07/2026",
+                      "register_type_id": 2,
+                      "voucher_type": "Individual",
+                      "policy_group_id": 101,
+                      "apply_type_id": 2,
+                      "promotion_type_id": 3
+                    },
+                    {
+                      "voucher_code": "CA4530GAIMTTCOMBO59K",
+                      "description": "Giảm combo 59k",
+                      "note": "",
+                      "to_date": "31/08/2026",
+                      "register_type_id": 2,
+                      "voucher_type": "Individual",
+                      "policy_group_id": 101,
+                      "apply_type_id": 2,
+                      "promotion_type_id": 1
+                    },
+                    {
+                      "voucher_code": "CA4467PLD1000FGOLD",
+                      "description": "100k PLD COMBO FPL",
+                      "note": "",
+                      "to_date": "31/05/2026",
+                      "register_type_id": 2,
+                      "voucher_type": "Individual",
+                      "policy_group_id": 110,
+                      "apply_type_id": 2,
+                      "promotion_type_id": 3
+                    },
+                    {
+                      "voucher_code": "CA4468PLD500FGOLD",
+                      "description": "50k PLD COMBO FPL",
+                      "note": "",
+                      "to_date": "31/05/2026",
+                      "register_type_id": 2,
+                      "voucher_type": "Individual",
+                      "policy_group_id": 110,
+                      "apply_type_id": 2,
+                      "promotion_type_id": 3
+                    },
+                    {
+                      "voucher_code": "CA4469PLD1500FGOLD",
+                      "description": "150k PLD COMBO FPL",
+                      "note": "",
+                      "to_date": "31/05/2026",
+                      "register_type_id": 2,
+                      "voucher_type": "Individual",
+                      "policy_group_id": 110,
+                      "apply_type_id": 2,
+                      "promotion_type_id": 3
+                    },
+                    {
+                      "voucher_code": "CA4470PLD2000FGOLD",
+                      "description": "200k PLD COMBO FPL",
+                      "note": "",
+                      "to_date": "31/05/2026",
+                      "register_type_id": 2,
+                      "voucher_type": "Individual",
+                      "policy_group_id": 110,
+                      "apply_type_id": 2,
+                      "promotion_type_id": 3
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    }
+  },
+  "components": {
+    "schemas": {},
+    "responses": {},
+    "securitySchemes": {}
+  },
+  "servers": [],
+  "security": []
+}
